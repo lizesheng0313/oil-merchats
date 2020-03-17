@@ -1,0 +1,59 @@
+@mixin gradientButton {
+  height: 40px;
+  background: $mainGradientColor;
+  border-radius: 45px;
+  margin: 0 27.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #fff;
+  position: relative;
+}
+
+@mixin next {
+  height: 40px;
+  background: $mainGradientColor;
+  border-radius: 45px;
+  margin: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #fff;
+  position: relative;
+  position: fixed;
+  bottom: 40px;
+  right: 0;
+  left: 0;
+}
+
+@mixin oil_btn {
+  height: 40px;
+  background: $mainGradientColor;
+  border-radius: 45px;
+  margin: 0 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 16px;
+  color: #fff;
+}
+
+@mixin flexAllCenter {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flexBetweenCenter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

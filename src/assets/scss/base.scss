@@ -1,0 +1,220 @@
+@import "./weui-variables.scss";
+
+page {
+  color: #323232;
+  font-size: 14px;
+  font-family: Helvetica, "Hiragino Sans GB", "Microsoft Yahei", "微软雅黑", Arial, sans-serif;
+}
+.flex-box {
+  display: flex;
+}
+.flex-all-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+}
+.flex-align_center {
+  align-items: center;
+}
+.flex {
+  flex: 1;
+}
+.h100 {
+  height: 100%;
+}
+.text-right {
+  text-align: right;
+}
+.loading {
+  position: absolute;
+  left: 100px;
+  animation: loading 1s infinite linear;
+}
+@keyframes loading {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+button {
+  margin: 0;
+  padding: 0;
+  border: none;
+  line-height: inherit;
+  outline: none;
+}
+button::after {
+  border: none;
+}
+.mask {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+.clearfix:after {
+  content: "";
+  display: block;
+  clear: both;
+}
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  color: transparent;
+}
+.btn_next {
+  width: 10px;
+  height: 10px;
+}
+button {
+  background: none;
+}
+.radio {
+  transform: scale(0.7);
+}
+radio-group {
+  margin-top: 15px;
+  position: relative;
+  left: -3px;
+  display: flex;
+  label {
+    display: flex;
+    align-items: center;
+    margin-right: 40px;
+    label:last-child {
+      margin: 0;
+    }
+  }
+}
+
+.home_goods {
+  margin: 25px 10px 0 10px;
+}
+.recommended_header {
+  margin-bottom: 12.5px;
+  @include flexBetweenCenter;
+  .title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #303030;
+  }
+  .more {
+    color: #b2b2b2;
+    font-size: 13px;
+    @include flexBetweenCenter;
+    i {
+      font-size: 15px;
+    }
+  }
+}
+
+.pay-box {
+  position: absolute;
+  bottom: 0;
+  padding-bottom: 30px;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  animation: payBox 0.2s ease-out;
+  .title {
+    height: 35px;
+    line-height: 35px;
+    text-align: center;
+    font-size: 16px;
+    padding: 10px 0;
+  }
+  .iconguanbi {
+    position: absolute;
+    left: 25px;
+    top: 15px;
+    font-size: 14px;
+  }
+  .pay_radio {
+    padding: 0 20px;
+    flex-direction: column;
+    margin: 0;
+    ._label {
+      height: 40px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      justify-content: space-between;
+      margin-right: 0;
+      .name {
+        margin-left: 50px;
+      }
+    }
+  }
+  .order_price {
+    margin: 20px 20px 0 20px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 18px;
+  }
+  .pay {
+    margin: 20px 20px 0px 20px;
+    height: 40px;
+    background: $mainColor;
+    border-radius: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 16;
+    color: #fff;
+  }
+}
+
+@keyframes payBox {
+  0% {
+    transform: translateY(150px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+
+.flex-box {
+  display: flex;
+}
+
+.flex-space_center {
+  justify-content: space-between;
+  align-items: center;
+  display: flex;
+}
+
+.flex-around_center {
+  justify-content: space-around;
+  align-items: center;
+  display: flex;
+}
+
+.flex-start_center {
+  display: flex;
+  align-items: center;
+}
+
+.flex_dir_end {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+}
+
+.flex_dir_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
