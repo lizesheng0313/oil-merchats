@@ -3,37 +3,26 @@
     <div class="step">
       <van-steps :steps="steps" :active="active" />
     </div>
-    <!-- <div v-if="active === 1" class="each_step">
-      <div class="flex-space_center deposit">
-        <p>
-          押金
-          <span>（可退）</span>
-        </p>
-        <p>1000元</p>
-      </div>
-      <p class="tips">为保证合规经营，需缴纳押金</p>
-      <div>
-        <radio-group @change="radioChange" class="pay_radio">
-          <label v-for="(item,index) in radioList" :key="index">
-            <div>
-              <input
-                type="checkbox"
-                :value="item.name"
-                class="radio"
-                :checked="payType==item.payType"
-                color="#2D78ED"
-              />
-              <span class="name">{{item.name}}</span>
-            </div>
-            <span class="content">{{item.content}}</span>
-          </label>
-        </radio-group>
-      </div>
-      <div class="submit_btn" @click="handleConfirm">押金充值</div>
-    </div>-->
     <div v-if="active === 1" class="each_step">
       <strong>实名认证</strong>
-      <p>我们将根据实名信息，为您购买《用车保险》</p>
+      <div class="login-input">
+        <input class="pas" type="text" placeholder="姓名" v-model="ruleForm.cellPhone" />
+      </div>
+      <div class="login-input">
+        <input class="pas" type="number" placeholder="身份证号" v-model="ruleForm.cellPhone" />
+      </div>
+      <div class="login-input">
+        <input class="pas" type="number" placeholder="绑定商户号" v-model="ruleForm.cellPhone" />
+      </div>
+      <div class="login-input">
+        <input type="number" placeholder="营业执照编码" v-model="ruleForm.password" class="pas" />
+      </div>
+      <div class="submit_btn">去认证</div>
+    </div>
+    <div v-if="active === 2" class="waiting_audit each_step">
+      <img src="../../assets/images/success.png" mode="widthFix" alt />
+      <p class="auth_complete">认证完成</p>
+      <p class="tips">请等待平台对您的审核</p>
     </div>
   </div>
 </template>
@@ -42,16 +31,6 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      radioList: [
-        {
-          name: "线下支付",
-          payType: "01"
-        },
-        {
-          name: "微信支付",
-          payType: "02"
-        }
-      ],
       steps: [
         {
           text: "手机验证"
@@ -63,55 +42,100 @@ export default {
           text: "等待审核"
         }
       ],
-      active: 1
+      active: 2
     };
   }
 };
 </script>
 <style lang="scss" scoped>
 .open-shop {
-  padding-top: 50px;
   background: #f7f8f9;
   .step {
-    padding: 0 15px;
+    padding: 50px 15px 0 15px;
   }
-  .each_step {
-    background: #fff;
-    .deposit {
-      padding: 0 20px;
-      margin-top: 20px;
+  .waiting_audit {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    img {
+      width: 80px;
     }
-    .deposit {
-      padding: 20px 20px 0 20px;
-      font-size: 16px;
-      span {
-        font-size: 12px;
-      }
+    .auth_complete {
+      margin-top: 10px;
+      font-size: 18px;
     }
     .tips {
-      margin: 20px 0;
-      font-size: 12px;
-      padding-left: 20px;
+      font-size: 14px;
+      margin-top: 5px;
       color: #777;
     }
-    .pay_radio {
-      padding: 0 20px;
-      flex-direction: column;
-      margin: 0;
-      ._label {
-        height: 40px;
-        border-bottom: 1px solid #eee;
-        display: flex;
-        justify-content: space-between;
-        margin-right: 0;
-        .name {
-          margin-left: 50px;
-        }
-      }
-    }
+  }
+  .each_step {
+    margin-top: 10px;
+    padding-top: 20px;
+    background: #fff;
     .submit_btn {
       @include gradientButton;
       margin-top: 36.5px;
+    }
+    strong {
+      padding-left: 30px;
+      margin-bottom: 30px;
+      font-size: 18px;
+    }
+    .login-input {
+      display: flex;
+      margin: 0 27.5px 20px 27.5px;
+      height: 45px;
+      border-radius: 22.5px;
+      background: #f7f8f9;
+      line-height: 45px;
+      position: relative;
+      .pas {
+        padding-left: 30px;
+      }
+      .iconfont {
+        color: #969699;
+        width: 35px;
+        display: inline-block;
+        text-align: center;
+      }
+      input {
+        color: #303030;
+        font-size: 14px;
+        flex-grow: 1;
+        padding-right: 20px;
+        height: 100%;
+        color: #303030;
+      }
+      .login-getcode {
+        position: absolute;
+        right: 19.5px;
+        top: 0;
+        z-index: 2;
+        color: $mainColor;
+        font-size: 13px;
+        background: none;
+        span {
+          border-left: 1px solid #c1c1c1;
+          padding-left: 12.5px;
+        }
+      }
+      .iconfont_code {
+        right: 100px;
+        z-index: 999;
+      }
+      .iconfont_right {
+        right: 120px;
+        z-index: 999;
+      }
+      .login-remember {
+        position: absolute;
+        right: 10px;
+        top: 0;
+        z-index: 999;
+      }
     }
   }
 }

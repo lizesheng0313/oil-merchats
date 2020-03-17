@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/billManage/main",
     "pages/openShop/main",
     "pages/login/main",
     "pages/home/main",

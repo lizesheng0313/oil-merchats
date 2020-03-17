@@ -19,30 +19,16 @@
       <span>账单明细</span>
     </div>
     <adv></adv>
-    <!-- <div class="mask zindex" v-if="islogin === false" catchtouchmove="ture">
-      <div class="login">
-        <h5>登陆提示</h5>
-        <p>您当前未登陆，请您确认授权登录后查看。</p>
-        <button open-type="getPhoneNumber" @getphonenumber="bindgetphonenumber" class="open-vip">确定</button>
-      </div>
-    </div>-->
   </div>
 </template>
 <script>
 import { mapState } from "vuex";
 import marque from "@/components/basic/marque";
 import adv from "@/components/basic/adv";
-import infoList from "@/components/list/infoList";
-import goods from "@/components/recommended/goods";
-import { promised } from "q";
-var QQMapWX = require("../../../static/js/qqmap-wx-jssdk.js");
-var qqmapsdk;
 export default {
   components: {
-    goods,
     marque,
-    adv,
-    infoList
+    adv
   },
   data() {
     return {
