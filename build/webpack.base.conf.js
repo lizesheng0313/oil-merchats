@@ -105,7 +105,6 @@ let baseWebpackConfig = {
       "imgUrl": '"https://web.youbenben.net/resource/"',
       "iconUrl": '"https://web.youbenben.net/resource/weixn/"',
       "STATICURL": '"https://pic.youbenben.net/"',
-      "apiBase": '"https://api-dev.youbenben.net/"',
       // apiBase: '"https://api.youbenben.net/"',
       "iconUrlNew": '"https://web.youbenben.net/resource/weixn/new/"'
     }),

@@ -1,8 +1,10 @@
 {
   "pages": [
+    "pages/login/forgetPassword/main",
+    "pages/login/main",
+    "pages/integralMall/main",
     "pages/billManage/main",
     "pages/openShop/main",
-    "pages/login/main",
     "pages/home/main",
     "pages/order/main"
   ],

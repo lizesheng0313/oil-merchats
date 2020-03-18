@@ -32,7 +32,7 @@ export const validatePhone = (phone) => {
 
 
 export const validePassword = (value) => {
-    const reg = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,20}$/;
+    const reg = /^(?![\d]+$)(?![a-zA-Z]+$)(?![^\da-zA-Z]+$).{6,12}$/;
     if (!reg.test(value)) {
         showToast("密码格式不正确");
         return false
@@ -79,4 +79,4 @@ export const valideIdentity = (value) => {
     }
     return true
 
-} 
+}

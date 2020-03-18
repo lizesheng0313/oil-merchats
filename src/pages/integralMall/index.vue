@@ -1,8 +1,5 @@
 <template>
   <div class="integral-mall">
-    <div class="adv">
-      <adv :noMargin="true"></adv>
-    </div>
     <div class="flex-box">
       <div class="intergral_left">
         <div
@@ -13,20 +10,32 @@
         >{{item.value}}</div>
       </div>
       <div class="intergral_right">
-        <div class="goods">
-          <i></i>
-          <span>{{currentTitle}}</span>
-          <i></i>
+        <div class="type">
+          <div
+            v-for="(item,index) in type"
+            :class="{active:current === index}"
+            :key="index"
+            @click="handleSelectcType(index)"
+          >{{item.title}}</div>
         </div>
         <div class="intergral_right_list">
           <div
-            class="intergral_right_item"
+            class="intergral_right_item flex-start_center"
             v-for="(item,index) in goodsList"
             :key="index"
-            @click="handleGoList(item)"
           >
             <img :src="item.img" mode="widthFix" class="goods_pic" />
-            <span>{{item.catgName}}</span>
+            <div class="flex-box">
+              <span>{{item.catgName}}</span>
+              <span>2.00</span>
+            </div>
+            <div class="intergral_footer">
+              <van-stepper :value="num" bind:change="onChange" />
+              <div>
+                <p>已销1000笔</p>
+                <p class="btn">上架</p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -35,15 +44,26 @@
 </template>
 <script>
 import { mapState } from "vuex";
-import adv from "@/components/basic/adv";
 export default {
-  components: { adv },
   data() {
     return {
+      num: 1,
       productLine: "",
       currentTitle: "",
       goodsList: [],
-      orderStatusList: []
+      orderStatusList: [],
+      current: 0,
+      type: [
+        {
+          title: "全部"
+        },
+        {
+          title: "出售中"
+        },
+        {
+          title: "已下架"
+        }
+      ]
     };
   },
   async mounted() {
@@ -53,6 +73,9 @@ export default {
     await this.fetchGoodList();
   },
   methods: {
+    handleSelectcType(index) {
+      this.current = index;
+    },
     fetchFirstList() {
       return this.$store
         .dispatch("actionRequest", {
@@ -90,16 +113,6 @@ export default {
           }
         });
     },
-    handleGoList(item) {
-      this.$router.push({
-        path: "/pages/integralMall/integralMallList/main",
-        query: {
-          title: this.currentTitle,
-          productLine: this.productLine,
-          brandId: item.id
-        }
-      });
-    },
     handleCheckIndex(item, index) {
       this.productLine = item.productLine;
       this.currentTitle = item.value;
@@ -129,14 +142,14 @@ export default {
       justify-content: center;
       border-left: 3px solid #f7f8f9;
     }
-    .active {
+    s .active {
       background: #fff;
       border-left: 3px solid #4f7ced;
     }
   }
   .intergral_right {
     background: #fff;
-    min-height: calc(100vh - 110px);
+    min-height: 100vh;
     flex: 1;
     padding-top: 10px;
     .goods {
@@ -153,20 +166,62 @@ export default {
         margin: 0 30px;
       }
     }
+    .type {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      div {
+        border-bottom: 2px solid #fff;
+      }
+      .active {
+        border-bottom: 2px solid $mainColor;
+        color: #333;
+        font-weight: 500;
+      }
+    }
     .intergral_right_list {
       .intergral_right_item {
+        position: relative;
         margin-top: 22px;
-        float: left;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
         margin-left: 16px;
+        height: 100px;
         .goods_pic {
           height: 67px;
           width: 67px;
           margin-bottom: 5px;
         }
+        .flex_dir_center {
+          justify-content: flex-end;
+        }
+      }
+      .flex-box {
+        flex-shrink: 0;
+        height: 100%;
+        flex-direction: column;
+        margin-left: 10px;
+        justify-content: space-around;
+      }
+    }
+    .intergral_footer {
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      right: 10px;
+      top: 0;
+      height: 100%;
+      justify-content: space-between;
+      align-items: center;
+      .btn {
+        border-radius: 50px;
+        display: inline-block;
+        width: 70px;
+        margin-top: 10px;
+        text-align: center;
+        line-height: 25px;
+        height: 25px;
+        border: 1px solid $mainColor;
+        color: #999;
       }
     }
   }

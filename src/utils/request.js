@@ -24,7 +24,7 @@ $fly.interceptors.request.use((request) => {
       param: request.body
     }
   }
-  if (request.body.head) {
+  if (request.body && request.body.head) {
     dataMsg.Head = { ...dataMsg.Head, ...request.body.head }
     delete dataMsg.Body.param.head
   }
@@ -51,12 +51,17 @@ $fly.interceptors.response.use(
     }
   },
   (err, promise) => {
-    wx.hideNavigationBarLoading();
-    wx.showToast({
-      title: err.message,
-      icon: 'none'
-    })
-    return promise.reject()
+    if (err.request.url === '/imageCode1Base64') {
+      return promise.resolve(err)
+    }
+    else {
+      wx.hideNavigationBarLoading();
+      wx.showToast({
+        title: err.message,
+        icon: 'none'
+      })
+      return promise.reject()
+    }
   }
 )
 

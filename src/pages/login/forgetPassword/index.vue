@@ -7,7 +7,7 @@
           class="pas"
           type="number"
           placeholder="请输入手机号"
-          v-model="ruleForm.loginId"
+          v-model="ruleForm.phone"
           maxlength="11"
         />
       </div>
@@ -23,55 +23,134 @@
       </div>
       <div class="login-input">
         <input
+          type="number"
+          placeholder="请输入验证码"
+          v-model="ruleForm.phoneCode"
+          maxlength="6"
+          class="input-basis pas"
+        />
+        <button class="login-getcode" @click="handleCheckUser" :disabled="isGetCode">
+          <span>{{countDown}}</span>
+        </button>
+      </div>
+
+      <div class="login-input">
+        <input
           type="password"
-          placeholder="请输入密码"
+          placeholder="6-12位数字、字母或符号两种组合"
           v-model="ruleForm.pwd"
           maxlength="20"
           class="pas"
         />
       </div>
-      <div class="login-mode" @click="handleToPasssword">忘记密码</div>
-      <div class="login-button" @click="handleConfirm">登录</div>
+      <div class="login-input">
+        <input
+          type="password"
+          placeholder="请再次输入密码"
+          v-model="ruleForm.rePwd"
+          maxlength="20"
+          class="pas"
+        />
+      </div>
+      <div class="login-button" @click="handleConfirm">重置</div>
     </div>
   </div>
 </template>
 <script>
-import { valideIsNull, validatePhone } from "@/utils/validate";
+import {
+  valideIsNull,
+  validatePhone,
+  valideComfirmPassword,
+  validePassword
+} from "@/utils/validate";
 import { mapState } from "vuex";
 export default {
   data() {
     return {
+      imageCode: "",
       ruleForm: {
-        loginId: "",
+        phone: "",
         imageCode: "",
-        pwd: ""
-      }
+        phoneCode: "",
+        pwd: "",
+        rePwd: ""
+      },
+      isGetCode: false,
+      countDown: "获取验证码"
     };
   },
   mounted() {
     this.fetchRquestImage();
   },
+  onUnload() {
+    clearInterval(this.timmer);
+    this.countDown = "获取验证码";
+    this.isGetCode = false;
+  },
   methods: {
+    handleConfirm() {
+      this.$store
+        .dispatch("actionRequest", {
+          head: {
+            service: "phoneFindPwd"
+          },
+          phoneFindPwd: this.ruleForm
+        })
+        .then(res => {
+          if (res.Head.state === "succ") {
+            wx.showToast({
+              title: "重置成功",
+              mask: true,
+              icon: "success"
+            });
+            setTimeout(() => {
+              this.$router.back();
+            }, 2000);
+          }
+        });
+    },
     fetchRquestImage() {
       this.$store.dispatch("actionRquestImage").then(res => {
         this.imageCode = res.engine.response;
         this.imageCode = this.imageCode.replace(/\s/g, "");
       });
     },
-    handleToPasssword() {
-      this.$router.push("/pages/login/forgetPassword/main");
-    },
-    handleConfirm() {
+    handleCheckUser() {
+      if (!validatePhone(this.ruleForm.phone)) return;
+      if (!valideIsNull(this.ruleForm.imageCode)) return;
+      wx.showLoading({
+        title: "发送中",
+        icon: "none",
+        mask: true
+      });
       this.$store
         .dispatch("actionRequest", {
           head: {
-            service: "userLogin"
+            service: "sendPhoneCodeByImageCode1"
           },
-          userLogin: this.ruleForm
+          sendPhoneCode: {
+            imageCode: this.ruleForm.imageCode,
+            phone: this.ruleForm.phone,
+            messageType: "setTradePwd"
+          }
         })
         .then(res => {
           if (res.Head.state === "succ") {
-            this.$router.push("/pages/home/main");
+            clearInterval(this.timmer);
+            wx.showToast({
+              title: "已发送验证码，请注意查收",
+              icon: "none"
+            });
+            this.isGetCode = true;
+            let second = 60;
+            this.timmer = setInterval(() => {
+              this.countDown = --second + "秒后重新发送";
+              if (second < 0) {
+                clearInterval(this.timmer);
+                this.countDown = "获取验证码";
+                this.isGetCode = false;
+              }
+            }, 1000);
           }
         });
     }
@@ -80,6 +159,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .login {
+  .picture_code {
+    width: 120px;
+    height: 100%;
+  }
   .footer_tips {
     position: fixed;
     bottom: 20px;
@@ -111,6 +194,7 @@ export default {
     border-radius: 22.5px;
     background: #f5f5f5;
     line-height: 45px;
+    align-items: center;
     position: relative;
     input {
       height: 100%;
