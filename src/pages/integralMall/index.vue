@@ -49,7 +49,6 @@ export default {
     return {
       num: 1,
       productLine: "",
-      currentTitle: "",
       goodsList: [],
       orderStatusList: [],
       current: 0,
@@ -67,8 +66,6 @@ export default {
     };
   },
   async mounted() {
-    this.productLine = this.$route.query.productLine;
-    this.currentTitle = this.$route.query.currentTitle;
     await this.fetchFirstList();
     await this.fetchGoodList();
   },
@@ -79,17 +76,10 @@ export default {
     fetchFirstList() {
       return this.$store
         .dispatch("actionRequest", {
-          head: {
-            subService: "getMallHomePageMenu"
-          },
-          queryId: "getPointsMallMenu"
+          queryId: "getSellerGoodsCategory"
         })
         .then(res => {
           if (res.Head.state === "succ") {
-            if (!this.productLine) {
-              this.productLine = res.Body.data[0].productLine;
-              this.currentTitle = res.Body.data[0].value;
-            }
             this.orderStatusList = res.Body.data;
           }
         });
@@ -115,7 +105,6 @@ export default {
     },
     handleCheckIndex(item, index) {
       this.productLine = item.productLine;
-      this.currentTitle = item.value;
       this.fetchGoodList();
     },
     handleToContent(item) {

@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div>
-      <img src="../../../assets/images/logo.png" class="login-logo" />
+      <!-- <img src="../../assets/images/logo.png" class="login-logo" /> -->
       <div class="login-input">
         <input
           class="pas"
@@ -41,6 +41,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      imageCode:"",
       ruleForm: {
         loginId: "",
         imageCode: "",
@@ -80,6 +81,10 @@ export default {
 </script>
 <style lang="scss" scoped>
 .login {
+  .picture_code {
+    width: 120px;
+    height: 100%;
+  }
   .footer_tips {
     position: fixed;
     bottom: 20px;
