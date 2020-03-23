@@ -1,10 +1,7 @@
 <template>
   <div class="roll" style="height:40px;">
     <ul :style="{transform:'translateY(-'+num+'px)'}" :class="{'marquee_top':num}">
-      <li v-for="(item,index) in roll" :key="index" style="height:20px;">
-        {{item.info}}
-        <span>{{item.pubDate}}</span>
-      </li>
+      <li v-for="(item,index) in roll" :key="index" style="height:20px;">{{item.content}}</li>
     </ul>
   </div>
 </template>
@@ -75,7 +72,7 @@ export default {
     color: #666;
     span {
       color: #b2b2b2;
-      margin-left:30px;
+      margin-left: 30px;
     }
   }
 }

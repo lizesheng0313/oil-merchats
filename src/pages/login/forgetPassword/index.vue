@@ -117,7 +117,7 @@ export default {
     },
     handleCheckUser() {
       if (!validatePhone(this.ruleForm.phone)) return;
-      if (!valideIsNull(this.ruleForm.imageCode)) return;
+      if (!valideIsNull(this.ruleForm.imageCode,'图片验证码')) return;
       wx.showLoading({
         title: "发送中",
         icon: "none",
@@ -131,7 +131,7 @@ export default {
           sendPhoneCode: {
             imageCode: this.ruleForm.imageCode,
             phone: this.ruleForm.phone,
-            messageType: "setTradePwd"
+            messageType: "findPwd"
           }
         })
         .then(res => {

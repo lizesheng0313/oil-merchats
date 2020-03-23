@@ -15,7 +15,7 @@
       </div>
     </div>
     <div class="home_nav">
-      <span>商品管理</span>
+      <span @click="hanleToIntergralMall">商品管理</span>
       <span>账单明细</span>
     </div>
     <adv></adv>
@@ -39,9 +39,12 @@ export default {
   },
   mounted() {
     this.fetchBanner();
-    this.fetchOil();
+    this.fetchInfo();
   },
   methods: {
+    hanleToIntergralMall() {
+      this.$router.push("/pages/integralMall/main");
+    },
     handleGoRecommended() {
       this.$router.push("/pages/recommendedInfo/main");
     },
@@ -55,10 +58,12 @@ export default {
           this.bannerList = res.Body.data;
         });
     },
-    fetchOil() {
+    fetchInfo() {
       this.$store
         .dispatch("actionRequest", {
-          queryId: "getDieselPrice"
+          param: {
+            queryId: "getSellerMsgList"
+          }
         })
         .then(res => {
           this.oilInfoList = res.Body.data;

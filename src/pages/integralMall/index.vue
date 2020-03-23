@@ -76,7 +76,7 @@ export default {
     fetchFirstList() {
       return this.$store
         .dispatch("actionRequest", {
-          queryId: "getSellerGoodsCategory"
+          params: { queryId: "getSellerGoodsCategory" }
         })
         .then(res => {
           if (res.Head.state === "succ") {

@@ -41,7 +41,7 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
-      imageCode:"",
+      imageCode: "",
       ruleForm: {
         loginId: "",
         imageCode: "",
@@ -71,8 +71,33 @@ export default {
           userLogin: this.ruleForm
         })
         .then(res => {
-          if (res.Head.state === "succ") {
-            this.$router.push("/pages/home/main");
+          if (res.data.Head.state === "succ") {
+            this.$store.commit(
+              "UPDATETOKEN",
+              res.headers["set-cookie"][0].split(",")[1]
+            );
+            this.$store
+              .dispatch("actionRequest", {
+                head: {
+                  service: "appGroup",
+                  subService: "userSellerService.isBind"
+                }
+              })
+              .then(res => {
+                if (res.Body.status === "02") {
+                  this.$router.push({
+                    path: "/pages/home/main",
+                    isTab: true
+                  });
+                } else {
+                  this.$router.push({
+                    path: "/pages/openShop/main",
+                    query: {
+                      index: res.Body.status.substr(1, 1)
+                    }
+                  });
+                }
+              });
           }
         });
     }

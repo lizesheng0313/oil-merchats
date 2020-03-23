@@ -6,18 +6,18 @@
     <div v-if="active === 1" class="each_step">
       <strong>实名认证</strong>
       <div class="login-input">
-        <input class="pas" type="text" placeholder="姓名" v-model="ruleForm.cellPhone" />
+        <input class="pas" type="text" placeholder="姓名" v-model="ruleForm.name" />
       </div>
       <div class="login-input">
-        <input class="pas" type="number" placeholder="身份证号" v-model="ruleForm.cellPhone" />
+        <input class="pas" type="number" placeholder="身份证号" v-model="ruleForm.identityCard" />
       </div>
       <div class="login-input">
-        <input class="pas" type="number" placeholder="绑定商户号" v-model="ruleForm.cellPhone" />
+        <input class="pas" type="number" placeholder="绑定商户号" v-model="ruleForm.sellerId" />
       </div>
       <div class="login-input">
-        <input type="number" placeholder="营业执照编码" v-model="ruleForm.password" class="pas" />
+        <input type="number" placeholder="营业执照编码" v-model="ruleForm.creditCode" class="pas" />
       </div>
-      <div class="submit_btn">去认证</div>
+      <div class="submit_btn" @click="handleToAuth">去认证</div>
     </div>
     <div v-if="active === 2" class="waiting_audit each_step">
       <img src="../../assets/images/success.png" mode="widthFix" alt />
@@ -42,8 +42,34 @@ export default {
           text: "等待审核"
         }
       ],
-      active: 2
+      active: 0,
+      ruleForm: {
+        name: "",
+        identityCard: "",
+        sellerId: "",
+        creditCode: ""
+      }
     };
+  },
+  mounted() {
+    this.active = Math.floor(this.$route.query.index) + 1;
+  },
+  methods: {
+    handleToAuth() {
+      this.$store
+        .dispatch("actionRequest", {
+          head: {
+            service: "appGroup",
+            subService: "userSellerService.bindRelation"
+          },
+          param: this.ruleForm
+        })
+        .then(res => {
+          if (res.Head.state === "succ") {
+            this.active = 2;
+          }
+        });
+    }
   }
 };
 </script>

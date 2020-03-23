@@ -20,13 +20,11 @@ $fly.interceptors.request.use((request) => {
       sid: "",
       cReqTime: ""
     },
-    Body: {
-      param: request.body
-    }
+    Body: request.body
   }
   if (request.body && request.body.head) {
     dataMsg.Head = { ...dataMsg.Head, ...request.body.head }
-    delete dataMsg.Body.param.head
+    delete dataMsg.Body.head
   }
   request.body = dataMsg;
   wx.showNavigationBarLoading()
@@ -36,7 +34,7 @@ $fly.interceptors.request.use((request) => {
 $fly.interceptors.response.use(
   (response, promise) => {
     wx.hideNavigationBarLoading();
-    if (response.data.Head.service === "weChat:bindLogin" || response.data.Head.service === "weChat:autoRegister") {
+    if (response.data.Head.service === 'userLogin') {
       return promise.resolve(response)
     }
     if (response.data.Head.state !== 'succ') {

@@ -11,33 +11,7 @@ import actions from './action'
 
 export default new Vuex.Store({
   state: {
-    preferentialObj: {
-      id: "",
-      ticketName: ""
-    },
     token: '',
-    userInfo: {},
-    location: {
-      province: "",
-      longitude: "",
-      city: "",
-      country: "",
-      latitude: "",
-      content: ""
-    },
-    //添加修改地址
-    addAddress: {
-      lat: "",
-      lnt: "",
-      addr: "",
-      adcode: ""
-    },
-    selectAddress: {
-      phone: "",
-      receiver: "",
-      addr: ""
-    },
-    agent: {}
   },
   mutations,
   actions,
