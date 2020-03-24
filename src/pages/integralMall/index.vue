@@ -5,9 +5,9 @@
         <div
           v-for="(item,index) in orderStatusList"
           :key="index"
-          :class="{'active':productLine == item.productLine}"
+          :class="{'active':productLine === item.productLine}"
           @click="handleCheckIndex(item,index)"
-        >{{item.value}}</div>
+        >{{item.catgName}}</div>
       </div>
       <div class="intergral_right">
         <div class="type">
@@ -15,24 +15,24 @@
             v-for="(item,index) in type"
             :class="{active:current === index}"
             :key="index"
-            @click="handleSelectcType(index)"
+            @click="handleSelectcType(item,index)"
           >{{item.title}}</div>
         </div>
         <div class="intergral_right_list">
           <div
             class="intergral_right_item flex-start_center"
-            v-for="(item,index) in goodsList"
+            v-for="(item,index) in list"
             :key="index"
           >
-            <img :src="item.img" mode="widthFix" class="goods_pic" />
+            <img :src="STATICURL+item.goodsImg" class="goods_pic" />
             <div class="flex-box">
               <span>{{item.catgName}}</span>
-              <span>2.00</span>
+              <span>{{item.price}}</span>
             </div>
             <div class="intergral_footer">
               <van-stepper :value="num" bind:change="onChange" />
               <div>
-                <p>已销1000笔</p>
+                <p>已销{{item.quantitySold}}笔</p>
                 <p class="btn">上架</p>
               </div>
             </div>
@@ -47,40 +47,63 @@ import { mapState } from "vuex";
 export default {
   data() {
     return {
+      STATICURL,
       num: 1,
       productLine: "",
-      goodsList: [],
+      list: [],
+      total: 0,
       orderStatusList: [],
+      queyrObj: {
+        pageNum: 1
+      },
       current: 0,
       type: [
         {
+          sort: "",
           title: "全部"
         },
         {
+          sort: "01",
           title: "出售中"
         },
         {
+          sort: "02",
           title: "已下架"
         }
       ]
     };
   },
+  onReachBottom() {
+    if (this.list.length < this.total) {
+      this.queyrObj.pageNum++;
+      this.fetchList();
+    }
+  },
   async mounted() {
+    this.reset();
     await this.fetchFirstList();
     await this.fetchGoodList();
   },
   methods: {
-    handleSelectcType(index) {
+    reset() {
+      this.list = [];
+      this.queyrObj.pageNum = 1;
+    },
+    handleSelectcType(item, index) {
+      this.reset();
+      this.sort = item.sort;
       this.current = index;
+      this.fetchGoodList();
     },
     fetchFirstList() {
       return this.$store
         .dispatch("actionRequest", {
-          params: { queryId: "getSellerGoodsCategory" }
+          param: { queryId: "getSellerGoodsCategory" }
         })
         .then(res => {
           if (res.Head.state === "succ") {
             this.orderStatusList = res.Body.data;
+            this.productLine = this.orderStatusList[0].productLine;
           }
         });
     },
@@ -92,18 +115,25 @@ export default {
       return this.$store
         .dispatch("actionRequest", {
           head: {
-            subService: "getPointsCategory"
+            subService: "getSellerGoodsList"
           },
-          level: "1",
-          productLine: this.productLine
+          param: {
+            sort: this.sort,
+            productLine: this.productLine
+          },
+          pageInfo: {
+            pageNum: this.queyrObj.pageNum
+          }
         })
         .then(res => {
           if (res.Head.state === "succ") {
-            this.goodsList = res.Body.data;
+            this.list = this.list.concat(res.Body.data);
+            this.total = res.Body.pageInfo.totalCount;
           }
         });
     },
     handleCheckIndex(item, index) {
+      this.reset();
       this.productLine = item.productLine;
       this.fetchGoodList();
     },
@@ -131,7 +161,7 @@ export default {
       justify-content: center;
       border-left: 3px solid #f7f8f9;
     }
-    s .active {
+    .active {
       background: #fff;
       border-left: 3px solid #4f7ced;
     }
@@ -176,6 +206,7 @@ export default {
         height: 100px;
         .goods_pic {
           height: 67px;
+          border-radius: 100px;
           width: 67px;
           margin-bottom: 5px;
         }

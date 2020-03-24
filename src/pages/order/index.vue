@@ -20,7 +20,7 @@
           <span class="type">{{item.statusStr}}</span>
         </div>
         <div class="order_list">
-          <img :src="STATICURL+item.img" mode="scaleToFill" />
+          <img :src="STATICURL+item.goodsImg" mode="scaleToFill" />
           <div>
             <div v-if="item.type === 'diesel'">
               <p class="time">司机姓名：{{item.name}}</p>
@@ -31,7 +31,7 @@
               <p class="title">{{item.name}}</p>
             </div>
             <p class="time">创建时间：{{item.createTime}}</p>
-            <p>总价：{{item.price}}</p>
+            <p>单价：{{item.price}}</p>
           </div>
         </div>
         <!-- <div class="flex-box order_footer">
@@ -82,10 +82,10 @@ export default {
     fetchList() {
       this.$store
         .dispatch("actionRequest", {
-          head: {
-            subService: "getOrderPageList"
+          param: {
+            queryId: "getSellerOrderList",
+            sort: this.queyrObj.status
           },
-          status: this.queyrObj.status,
           pageInfo: {
             pageNum: this.queyrObj.pageNum
           }
