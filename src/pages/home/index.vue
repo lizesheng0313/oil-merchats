@@ -2,7 +2,7 @@
   <div class="home">
     <div class="home_bg">
       <div class="home_address">
-        <span>{{merchantName}}</span>
+        <span>{{merchantInfo.name}}</span>
       </div>
       <swiper :autoplay="true" :interval="5000" :duration="1000" :circular="true">
         <swiper-item v-for="(item,index) in bannerList" :key="index">
@@ -32,16 +32,35 @@ export default {
   },
   data() {
     return {
-      merchantName: "商户名",
       bannerList: [],
       oilInfoList: []
     };
   },
+  computed: {
+    ...mapState({
+      merchantInfo: "merchantInfo"
+    })
+  },
   mounted() {
     this.fetchBanner();
     this.fetchInfo();
+    this.fetchMerchatBaseInfo();
   },
   methods: {
+    fetchMerchatBaseInfo() {
+      this.$store
+        .dispatch("actionRequest", {
+          param: {
+            queryId: "getSellerAccountInfo",
+            showType: "home"
+          }
+        })
+        .then(res => {
+          if (res.Head.state === "succ") {
+            this.$store.commit("SETMERCHATINFO", res.Body.data[0]);
+          }
+        });
+    },
     hanleToIntergralMall() {
       this.$router.push("/pages/integralMall/main");
     },
@@ -51,11 +70,15 @@ export default {
     fetchBanner() {
       this.$store
         .dispatch("actionRequest", {
-          queryId: "getBannerList",
-          showType: "home"
+          param: {
+            queryId: "getSellerBannerList",
+            showType: "home"
+          }
         })
         .then(res => {
-          this.bannerList = res.Body.data;
+          if (res.Head.state === "succ") {
+            this.bannerList = res.Body.data;
+          }
         });
     },
     fetchInfo() {
@@ -66,7 +89,9 @@ export default {
           }
         })
         .then(res => {
-          this.oilInfoList = res.Body.data;
+          if (res.Head.state === "succ") {
+            this.oilInfoList = res.Body.data;
+          }
         });
     }
   }

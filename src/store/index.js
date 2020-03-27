@@ -12,6 +12,7 @@ import actions from './action'
 export default new Vuex.Store({
   state: {
     token: '',
+    merchantInfo: ""
   },
   mutations,
   actions,

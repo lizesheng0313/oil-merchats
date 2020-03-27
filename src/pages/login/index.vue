@@ -1,7 +1,7 @@
 <template>
   <div class="login">
     <div>
-      <!-- <img src="../../assets/images/logo.png" class="login-logo" /> -->
+      <img src="../../assets/images/logo.png" class="login-logo" />
       <div class="login-input">
         <input
           class="pas"
