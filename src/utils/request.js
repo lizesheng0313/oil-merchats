@@ -1,5 +1,4 @@
 import store from '../store'
-
 var Fly = require("flyio/dist/npm/wx");
 const $fly = new Fly()
 $fly.interceptors.request.use((request) => {
@@ -35,8 +34,20 @@ $fly.interceptors.response.use(
   (response, promise) => {
     wx.hideNavigationBarLoading();
     if (response.data.Head.service === 'userLogin') {
+      if (response.data.Head.state !== 'succ') {
+        wx.showToast({
+          title: response.data.Head.msg,
+          icon: 'none'
+        })
+      }
       return promise.resolve(response)
     }
+    // if (response.data.Head.code === 'pi1003') {
+    //   wx.reLaunch({
+    //     url: '/pages/login/main'
+    //   })
+    // }
+
     if (response.data.Head.state !== 'succ') {
       wx.showToast({
         title: response.data.Head.msg,
@@ -49,6 +60,7 @@ $fly.interceptors.response.use(
     }
   },
   (err, promise) => {
+    console.log(err)
     if (err.request.url === '/imageCode1Base64') {
       return promise.resolve(err)
     }

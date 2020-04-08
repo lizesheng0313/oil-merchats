@@ -24,16 +24,17 @@
             v-for="(item,index) in list"
             :key="index"
           >
-            <img :src="STATICURL+item.goodsImg" class="goods_pic" />
+            <!-- <img :src="STATICURL+item.goodsImg" class="goods_pic" /> -->
             <div class="flex-box">
               <span>{{item.catgName}}</span>
               <span>{{item.price}}</span>
             </div>
             <div class="intergral_footer">
-              <van-stepper :value="num" bind:change="onChange" />
+              <van-stepper :value="item.sellQty" @change="onChange(item)" />
               <div>
                 <p>已销{{item.quantitySold}}笔</p>
-                <p class="btn">上架</p>
+                <p class="btn" v-if="item.isAdded === '00'" @click="handleChangeGoods(item,'01')">上架</p>
+                <p class="btn" v-else @click="handleChangeGoods(item,'00')">下架</p>
               </div>
             </div>
           </div>
@@ -85,6 +86,27 @@ export default {
     await this.fetchGoodList();
   },
   methods: {
+    onChange(e) {
+     this.handleChangeGoods(e,e.isAdded)
+    },
+    handleChangeGoods(item,value) {
+      this.$store.dispatch("actionRequest", {
+        head: {
+          service: "appGroup",
+          subService: "sellerService.modifyGoodsInfo",
+          appCode: "shop"
+        },
+        param: {
+          goodsId: item.goodsId,
+          isAdded: value,
+          sellQty: item.sellQty
+        }
+      }).then(res=>{
+        if(res.Head.state == "succ") {
+          item.isAdded = value
+        }
+      })
+    },
     reset() {
       this.list = [];
       this.queyrObj.pageNum = 1;

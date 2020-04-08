@@ -9,14 +9,14 @@
           <img class="slide-image" mode="widthFix" :src="item.imgPath" />
         </swiper-item>
       </swiper>
-      <div class="marque flex-box">
+      <div class="marque flex-box" @click="handleToMessage">
         <img class="today_message" mode="widthFix" src="../../assets/images/todayMesesage.png" />
         <marque :roll="oilInfoList"></marque>
       </div>
     </div>
     <div class="home_nav">
       <span @click="hanleToIntergralMall">商品管理</span>
-      <span>账单明细</span>
+      <span @click="handleToBillManage">账单明细</span>
     </div>
     <adv></adv>
   </div>
@@ -47,6 +47,9 @@ export default {
     this.fetchMerchatBaseInfo();
   },
   methods: {
+    handleToBillManage() {
+      this.$router.push("/pages/billManage/main");
+    },
     fetchMerchatBaseInfo() {
       this.$store
         .dispatch("actionRequest", {
@@ -80,6 +83,9 @@ export default {
             this.bannerList = res.Body.data;
           }
         });
+    },
+    handleToMessage() {
+      this.$router.push("/pages/message/main");
     },
     fetchInfo() {
       this.$store

@@ -22,22 +22,25 @@
         <div class="order_list">
           <img :src="STATICURL+item.goodsImg" mode="scaleToFill" />
           <div>
-            <div v-if="item.type === 'diesel'">
+            <!-- <div v-if="item.type === 'diesel'">
               <p class="time">司机姓名：{{item.name}}</p>
               <p>车牌号：{{item.plateNo}}</p>
               <p class="time">预约时间：{{item.timeSlot}}</p>
-            </div>
-            <div v-else>
-              <p class="title">{{item.name}}</p>
+            </div>-->
+            <div>
+              <p class="title">{{item.goodsName}}</p>
             </div>
             <p class="time">创建时间：{{item.createTime}}</p>
             <p>单价：{{item.price}}</p>
           </div>
         </div>
-        <!-- <div class="flex-box order_footer">
-          <span>50升</span>
-          <span class="amount">￥{{item.price}}</span>
-        </div>-->
+        <div
+          class="flex-box order_footer"
+          v-if="item.status === '08'"
+          style="display:flex;justify-content:flex-end"
+        >
+          <div @click="handleToSubmit(item)" class="btn_goods">确认收货</div>
+        </div>
       </div>
     </div>
   </div>
@@ -79,6 +82,36 @@ export default {
     this.fetchList();
   },
   methods: {
+    handleToSubmit(item) {
+      let t = this;
+      wx.showModal({
+        title: "确认提示",
+        content: "是否确认提供",
+        showCancel: true,
+        success() {
+          wx.showLoading({
+            title: "确认中",
+            mask: true
+          });
+          t.$store
+            .dispatch("actionRequest", {
+              head: {
+                service: "appGroup",
+                subService: "gsOrderService.confirmSend"
+              },
+              param: {
+                orderId: item.orderId
+              }
+            })
+            .then(res => {
+              if (res.Head.state === "succ") {
+                this.reset();
+                this.fetchList();
+              }
+            });
+        }
+      });
+    },
     fetchList() {
       this.$store
         .dispatch("actionRequest", {
@@ -204,6 +237,16 @@ export default {
         margin-left: 5px;
       }
     }
+  }
+  .btn_goods {
+    width: 90px;
+    height: 28px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50px;
+    color: #777;
+    border: 1px solid #ccc;
   }
 }
 </style>

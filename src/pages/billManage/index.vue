@@ -1,27 +1,27 @@
 <template>
   <div class="bill_manage">
-    <swiper :autoplay="true" :interval="5000" :duration="1000" :circular="true">
+    <!-- <swiper :autoplay="true" :interval="5000" :duration="1000" :circular="true">
       <swiper-item v-for="(item,index) in bannerList" :key="index">
         <img class="slide-image" mode="widthFix" :src="item.imgPath" />
       </swiper-item>
-    </swiper>
+    </swiper> -->
     <div class="mine-info">
       <div>
-        <span>{{userInfo.availableAmount}}</span>
+        <span>{{merchantInfo.todayIncome}}</span>
         <p>今日流水</p>
       </div>
       <div>
-        <span>{{userInfo.mallAmount}}</span>
+        <span>{{merchantInfo.yesterdayIncome}}</span>
         <p>昨日流水</p>
       </div>
       <div>
-        <span>{{userInfo.creditAmount}}</span>
+        <span>{{merchantInfo.incomeAmount}}</span>
         <p>账单总额</p>
       </div>
     </div>
     <div class="content">
       <div class="flex-between" v-for="(item,index) in list" :key="index">
-        <span>{{item.desc}}</span>
+        <span>{{item.sceneStr}}</span>
         <p>{{item.amount}}</p>
       </div>
     </div>
@@ -39,7 +39,11 @@ export default {
       }
     };
   },
-
+  computed: {
+    ...mapState({
+      merchantInfo: "merchantInfo"
+    })
+  },
   onReachBottom() {
     if (this.list.length < this.total) {
       this.queyrObj.pageNum++;
@@ -58,7 +62,9 @@ export default {
     fetchList() {
       this.$store
         .dispatch("actionRequest", {
-          queryId: "getAccountTrade",
+          param: {
+            queryId: "getSellerAccountTrade"
+          },
           pageInfo: {
             pageNum: this.queyrObj.pageNum
           }
@@ -75,7 +81,7 @@ export default {
 .bill_manage {
   swiper {
     height: 130px;
-    margin:0 10px;
+    margin: 0 10px;
     img {
       width: 100%;
       height: 120px !important;

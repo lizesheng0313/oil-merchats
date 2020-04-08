@@ -1,12 +1,13 @@
 {
   "pages": [
+    "pages/message/main",
     "pages/home/main",
     "pages/login/main",
+    "pages/order/main",
     "pages/integralMall/main",
     "pages/login/forgetPassword/main",
     "pages/billManage/main",
-    "pages/openShop/main",
-    "pages/order/main"
+    "pages/openShop/main"
   ],
   "window": {
     "navigationBarTitleText": "油奔奔",
