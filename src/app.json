@@ -1,7 +1,7 @@
 {
   "pages": [
-    "pages/message/main",
     "pages/home/main",
+    "pages/message/main",
     "pages/login/main",
     "pages/order/main",
     "pages/integralMall/main",

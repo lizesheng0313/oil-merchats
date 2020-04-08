@@ -19,7 +19,7 @@
 	},
 	"miniprogramRoot": "dist/wx/",
 	"compileType": "miniprogram",
-	"appid": "wxe125bb42a0bd3849",
+	"appid": "wxbb8be79f3c5ea675",
 	"projectname": "oil",
 	"libVersion": "2.7.0",
 	"simulatorType": "wechat",
